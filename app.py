@@ -52,10 +52,9 @@ analysis_task = Task(
 
 strategy_task = Task(
     description="Based on the findings, outline 3 high-impact strategic actions for executive leadership.",
-    expected_output="3 clear, actionable strategic recommendations with expected impact.",
+    expected_output="A structured markdown table containing columns for Action, Core Elements (what will be done), Owner(s), Timeline (Key Milestones), and Expected Impact (Why it matters).",
     agent=strategy_advisor
 )
-
 # 7. Form Crew
 bi_crew = Crew(
     agents=[data_analyst, strategy_advisor],
