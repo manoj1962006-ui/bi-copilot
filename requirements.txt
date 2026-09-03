@@ -1,4 +1,5 @@
 streamlit
+pydantic==2.8.2
 crewai
 litellm
 pandas
