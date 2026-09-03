@@ -1,11 +1,15 @@
 import streamlit as st
 import pandas as pd
-from app import bi_crew
 
-st.set_page_config(page_title="BI Copilot", page_icon="📈", layout="wide")
+st.set_page_config(page_title="BI Copilot", page_icon="📊", layout="wide")
 
-st.title("📈 Autonomous BI Copilot")
+st.title("🤖 Autonomous BI Copilot")
 st.write("Ask your multi-agent AI team to analyze business challenges or raw CSV data to generate strategic solutions.")
+
+@st.cache_resource
+def load_crew():
+    from app import bi_crew
+    return bi_crew
 
 # 1. File Uploader Widget
 uploaded_file = st.file_uploader("Upload a CSV dataset (Optional):", type=["csv"])
@@ -29,6 +33,7 @@ if st.button("Run Multi-Agent Analysis", type="primary"):
     full_prompt = user_query + csv_context
     with st.spinner("Agents are analyzing your request..."):
         try:
+            bi_crew = load_crew()
             result = bi_crew.kickoff(inputs={"query": full_prompt})
             
             # Fix HTML tag formatting issues
@@ -36,15 +41,15 @@ if st.button("Run Multi-Agent Analysis", type="primary"):
             
             st.success("Analysis Complete!")
             st.markdown("---")
-            st.markdown("### 📋 Executive Business Report")
+            st.markdown("### 📊 Executive Business Report")
             st.markdown(clean_result)
-            
+
             # 4. Download Report Button
             st.download_button(
                 label="📥 Download Executive Report (.md)",
                 data=clean_result,
                 file_name="executive_report.md",
-                mime="text/markdown"
+                mime="text/markdown",
             )
         except Exception as e:
             st.error(f"An error occurred: {e}")
